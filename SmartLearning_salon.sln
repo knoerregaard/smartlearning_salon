@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLearning_salon", "SmartLearning_salon\SmartLearning_salon.csproj", "{83297BA7-2E2D-4BB0-B1B7-A83A93ABCD02}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{83297BA7-2E2D-4BB0-B1B7-A83A93ABCD02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83297BA7-2E2D-4BB0-B1B7-A83A93ABCD02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83297BA7-2E2D-4BB0-B1B7-A83A93ABCD02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83297BA7-2E2D-4BB0-B1B7-A83A93ABCD02}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {527E36BF-ED08-4FA1-A826-6CEA4EF4CA3B}
+	EndGlobalSection
+EndGlobal
