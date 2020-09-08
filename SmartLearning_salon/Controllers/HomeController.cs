@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SmartLearning_salon.Models;
-
+using SmartLearning_salon.Services;
 namespace SmartLearning_salon.Controllers
 {
     public class HomeController : Controller
