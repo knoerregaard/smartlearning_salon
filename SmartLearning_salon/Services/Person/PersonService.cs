@@ -22,7 +22,7 @@ namespace SmartLearning_salon.Services.Person
         }
         public async Task AddItemAsync(Models.Person person)
         {
-            await container.CreateItemAsync<Models.Person>(person, new PartitionKey(person.Id));
+            await container.CreateItemAsync(person, new PartitionKey(person.Id));
         }
         public async Task DeleteItemAsync(string id)
         {
@@ -34,6 +34,7 @@ namespace SmartLearning_salon.Services.Person
             try
             {
                 ItemResponse<Models.Person> response = await container.ReadItemAsync<Models.Person>(id, new PartitionKey(id));
+
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)

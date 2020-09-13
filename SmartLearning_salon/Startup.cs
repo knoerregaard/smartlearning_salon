@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SmartLearning_salon.Services.Person;
+using SmartLearning_salon.Services.BlobStorage;
+using Azure.Storage.Blobs;
 
 namespace SmartLearning_salon
 {
@@ -28,12 +30,38 @@ namespace SmartLearning_salon
             services.AddControllersWithViews();
 
 
+
             // Dependencies registration https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.1
 
 
             //services.AddScoped<IPersonService, PersonService>();
             services.AddSingleton<IPersonService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDB")));
+            services.AddSingleton<IBlobStorage>(InitializeBlobStorageAsync(Configuration.GetSection("BlobStorage")));
+
         }
+
+        public static IBlobStorage InitializeBlobStorageAsync(IConfigurationSection configurationSection)
+        {
+
+            string Account = configurationSection.GetSection("Account").Value;
+            string Key = configurationSection.GetSection("Key").Value;
+            string ContainerId = configurationSection.GetSection("ContainerId").Value;
+            string storageConnectionString = "DefaultEndpointsProtocol=https;"
+            + "AccountName=" + configurationSection.GetSection("Account").Value
+            + ";AccountKey=" + configurationSection.GetSection("Key").Value 
+            + ";EndpointSuffix=core.windows.net";
+
+            //CosmosClient client = new CosmosClient(Account, Key);
+            //IBlobStorage BlobStorage = new BlobStorage();
+
+
+            BlobContainerClient bcc = new BlobContainerClient(storageConnectionString, ContainerId);
+
+            IBlobStorage BlobStorageService = new BlobStorage(bcc, ContainerId);
+            return BlobStorageService;
+            //DatabaseResponse response = client.GetDatabase(DatabaseId);
+        }
+
 
         public static IPersonService InitializeCosmosClientInstanceAsync(IConfigurationSection configurationSection)
         {

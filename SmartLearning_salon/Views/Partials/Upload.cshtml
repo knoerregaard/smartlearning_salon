@@ -1,9 +1,11 @@
-﻿@using SmartLearning_salon.Models 
+﻿@using SmartLearning_salon.Models
+
 @model Person
 
+@{ }
 <!-- Hvordan får jeg filnavnet ned til Person view? -->
 
 <h2>Upload dit Covid 19 test resultat</h2>
 
-@Html.TextBoxFor(m => m.TestResult, new { type = "file" })
-@Html.ValidationMessageFor(m => m.TestResult)
+@Html.TextBoxFor(m => m.File, new { type = "file" })
+@Html.ValidationMessageFor(m => m.File)

@@ -1,4 +1,4 @@
-﻿@model SmartLearning_salon.Models.Person
+﻿@model Person
 
 @{
     ViewData["Title"] = "Person";
@@ -6,11 +6,10 @@
 
 <h1>Person</h1>
 
-<h4>Person</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" method="post">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
@@ -27,14 +26,28 @@
                 <input asp-for="Ssn" class="form-control" />
                 <span asp-validation-for="Ssn" class="text-danger"></span>
             </div>
+            @*<div class="form-group">
+                <label asp-for="TestResult" class="control-label"></label>
+                <input type="checkbox" asp-for="TestResult" class="form-control" />
+                <span asp-validation-for="TestResult" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <input type="file" asp-for="File" />
+                <span asp-validation-for="File" class="text-danger"></span>
+            </div>
+
+            @*@Html.TextBoxFor(m => m.TestResult, new { type = "file" })
+        @Html.ValidationMessageFor(m => m.TestResult)*@
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+
         </form>
     </div>
 </div>
 
-@await Html.PartialAsync("~/Views/Partials/Upload.cshtml", SmartLearning_salon.Models.Person)
+
 
 <div>
     <a asp-action="Index">Back to List</a>

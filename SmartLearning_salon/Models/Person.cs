@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 namespace SmartLearning_salon.Models
 {
@@ -16,8 +18,11 @@ namespace SmartLearning_salon.Models
         [JsonProperty(PropertyName = "ssn")]
         public string Ssn { get; set; }
 
-        [JsonProperty(PropertyName = "test-result")]
-        public string TestResult { get; set; }
+        //[JsonProperty(PropertyName = "testresult")]
+        //public bool TestResult { get; set; }
+
+        [JsonProperty(PropertyName = "file")]
+        public IFormFile File { get; set; }
 
     }
 }

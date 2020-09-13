@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartLearning_salon.Models;
+using SmartLearning_salon.Services.BlobStorage;
 using SmartLearning_salon.Services.Person;
 
 namespace SmartLearning_salon.Controllers
@@ -13,10 +15,12 @@ namespace SmartLearning_salon.Controllers
     {
         //Reference
         private readonly IPersonService _personService;
+        private readonly IBlobStorage _blobStorageService;
         //Injecting the service
-        public PersonController(IPersonService personService)
+        public PersonController(IPersonService personService, IBlobStorage blobStorage)
         {
             _personService = personService;
+            _blobStorageService = blobStorage;
         }
         // GET: PersonController
         public IActionResult Index()
@@ -30,9 +34,11 @@ namespace SmartLearning_salon.Controllers
         }
 
         // GET: PersonController/Details/5
-        public IActionResult Details(int id)
+        public async Task<ActionResult<Person>> Details(string id)
         {
-            return View();
+            Person person = await _personService.GetItemAsync(id);
+
+            return View(person);
         }
 
         // GET: PersonController/Create
@@ -44,19 +50,32 @@ namespace SmartLearning_salon.Controllers
         // POST: PersonController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Person person)
+        public  async Task<ActionResult> Create(Person person)
         {
-            try
+            using (var stream = new MemoryStream())
             {
-                //using the Injected service
-                _personService.AddItemAsync(person);
+                try
+                {
+                    // assume a single file POST
+                    await person.File.CopyToAsync(stream);
+                    stream.Seek(0, SeekOrigin.Begin);
 
-                return RedirectToAction(nameof(Index));
+                    // now send blob up to Azure
+                    await _blobStorageService.CreateBlobAsync(person.File.OpenReadStream(), person.File.FileName);
+
+                    // send to Cosmos
+                    await _personService.AddItemAsync(person);
+
+                    //Ændre dette til at returnere et til detail view
+                    return View(person);
+                    //return Ok(new { fileuploaded = true });
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex);
+                }
             }
-            catch
-            {
-                return View();
-            }
+
         }
 
         // GET: PersonController/Edit/5
