@@ -50,32 +50,29 @@ namespace SmartLearning_salon.Controllers
         // POST: PersonController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public  async Task<ActionResult> Create(Person person)
+        public async Task<ActionResult> Create([FromForm] PersonForm personForm)
         {
-            using (var stream = new MemoryStream())
+            try
             {
-                try
+                // now send blob up to Azure
+                await _blobStorageService.CreateBlobAsync(
+                    personForm.File.OpenReadStream(), personForm.File.FileName);
+
+                // send to Cosmos
+                await _personService.AddItemAsync(new Person
                 {
-                    // assume a single file POST
-                    await person.File.CopyToAsync(stream);
-                    stream.Seek(0, SeekOrigin.Begin);
+                    Id = personForm.Id,
+                    Name = personForm.Name,
+                    Ssn = personForm.Ssn
+                });
 
-                    // now send blob up to Azure
-                    await _blobStorageService.CreateBlobAsync(person.File.OpenReadStream(), person.File.FileName);
-
-                    // send to Cosmos
-                    await _personService.AddItemAsync(person);
-
-                    //Ændre dette til at returnere et til detail view
-                    return View(person);
-                    //return Ok(new { fileuploaded = true });
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex);
-                }
+                //Ændre dette til at returnere et til detail view
+                return View("Person");
             }
-
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         // GET: PersonController/Edit/5

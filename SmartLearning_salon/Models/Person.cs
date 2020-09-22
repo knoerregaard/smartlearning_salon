@@ -7,22 +7,24 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 namespace SmartLearning_salon.Models
 {
+    public class PersonForm
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Ssn { get; set; }
+        public IFormFile File { get; set; }
+    }
+
     public class Person
     {
-        [JsonProperty(PropertyName = "id")]
+        [JsonProperty("id")]
         public string Id { get; set; }
 
-        [JsonProperty(PropertyName = "name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty(PropertyName = "ssn")]
+        [JsonProperty("ssn")]
         public string Ssn { get; set; }
-
-        //[JsonProperty(PropertyName = "testresult")]
-        //public bool TestResult { get; set; }
-
-        [JsonProperty(PropertyName = "file")]
-        public IFormFile File { get; set; }
-
     }
+
 }
